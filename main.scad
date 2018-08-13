@@ -13,7 +13,7 @@ include <bolt_params.scad>
 use <bolts.scad>
 
 duct_hole_sh = 38;
-duct_hole_sw = 41;
+duct_hole_sw = 42;
 duct_fan_w = 48;
 duct_fan_h = 52;
 mount_d = 10; // original is 8.3, but a little extra clearance is needed for flextion
