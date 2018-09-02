@@ -16,11 +16,13 @@ duct_hole_sh = 38;
 duct_hole_sw = 42;
 duct_fan_w = 48;
 duct_fan_h = 52;
-mount_d = 5; // 
+mount_d = 5; // depth of mount
+mount_e = 3; // extended depth of fan mounting hole
 mount_t = 2; // thickness of mounting points
+mount_o = 0.15; // offset
 mount_cs_r = 7.5/2; // radius of countersink
 motor_heat_sink_t = 2; // add heat sink to motor
-mount_wc = 68; // distance from inside mounting faces (outside of fan, to outside of motor)
+mount_wc = 69; // distance from inside mounting faces (outside of fan, to outside of motor)
 mount_wi = mount_wc + motor_heat_sink_t;
 mount_fan_cb_s = 17.25; // distance from outside of fan to cold block slot
 mount_fan_lower_hole_h = 5.34; // height of center of lower duct fan hole from platform
@@ -100,18 +102,18 @@ module mount() {
           cylinder(r=mount_r,h=mount_d,$fn=mount_sm);
       }
       // motor mount connector
-      translate([mount_wi,-duct_fan_offset_y,0]) connector();
+      translate([mount_wi+mount_o,-duct_fan_offset_y,0]) connector();
       // fan mount connector
-      translate([0,motor_h-duct_fan_offset_y,0]) rotate([0,0,180]) connector();
+      translate([-2+mount_o,motor_h-duct_fan_offset_y,0]) rotate([0,0,180]) connector();
     }
     // cold block notch
     translate([mount_fan_cb_s-cb_ew,-1-2,-1]) 
        cube([cb_w+2*cb_ew,1-duct_fan_offset_y,mount_d+2]);
     // fan duct mounting holes
     translate([mount_t+mount_fan_cb_s-mount_fan_hole_cb_s,mount_fan_lower_hole_h,-1]) {
-      cylinder(r=mount_fan_hole_r,h=mount_d+2,$fn=mount_sm);
+      cylinder(r=mount_fan_hole_r,h=mount_d+mount_e,$fn=mount_sm);
       translate([duct_hole_sw,duct_hole_sh,0])
-        cylinder(r=mount_fan_hole_r,h=mount_d+2,$fn=mount_sm);
+        cylinder(r=mount_fan_hole_r,h=mount_d+mount_e,$fn=mount_sm);
       // central opening (for wiring)
       hull() {
         translate([duct_hole_sw/2,duct_hole_sh/2,mount_t])
